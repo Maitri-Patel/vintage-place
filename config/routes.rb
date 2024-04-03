@@ -1,6 +1,18 @@
 Rails.application.routes.draw do
+  get 'static_pages/about'
+  get 'static_pages/contact'
+
+  # Static pages
+  get 'about', to: 'static_pages#about'
+  get 'contact', to: 'static_pages#contact'
+  
+
+  get 'products/index'
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
+  root to: 'products#index' # Sets the products index as the front page
+  resources :products, only: [:index] # This enables the products_path helper
+  
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
