@@ -1,0 +1,15 @@
+/* This class will be used to ensure the paragraph block is centered */
+.center-block {
+    display: block;       // Use block to ensure it fills the container
+    margin-left: auto;    // Auto margins for horizontal centering
+    margin-right: auto;   // Auto margins for horizontal centering
+    text-align: center;   // Center the text inside the block
+  }
+  
+  // Custom styles for the paragraph
+  .custom-text {
+    color: red;            // Red text color
+    font-weight: bold;     // Bold text
+    font-size: 20px;       // Text size 20px
+    background-color: #343a40; // Dark background using a Bootstrap color
+  }
