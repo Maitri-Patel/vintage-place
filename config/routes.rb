@@ -13,6 +13,17 @@ Rails.application.routes.draw do
   root to: 'products#index' # Sets the products index as the front page
   resources :products, only: [:index] # This enables the products_path helper
   
+  get 'cart', to: 'cart#show'
+
+  post 'cart/items/:product_id', to: 'cart#add_item', as: 'cart_add'
+  patch 'cart/items/:product_id', to: 'cart#update_item', as: 'update_cart_item'
+  delete 'cart/items/:product_id', to: 'cart#remove_item', as: 'remove_cart_item'
+
+
+
+  # Route for product details page
+  get 'products/:id', to: 'products#show', as: 'product'
+  
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

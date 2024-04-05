@@ -1,15 +1,38 @@
 <!-- app/views/products/index.html.erb -->
-<h2>Available Products </h2>
-<div class="alert alert-primary" role="alert">
-  If you can see this alert, then Bootstrap is working!
+<!-- Container to center content and apply flexbox -->
+
+<div class="container text-center">
+  <!-- Navigation Links -->
+  <nav class="nav justify-content-center">
+    <%= link_to 'On Sale', products_path(on_sale: true), class: 'nav-link' %>
+    <%= link_to 'New Products', products_path(new: true), class: 'nav-link' %>
+    <%= link_to 'Recently Updated', products_path(recently_updated: true), class: 'nav-link' %>
+  </nav>
+
+  <!-- Heading with custom style -->
+  <h2 class="mt-4" style="font-family: 'Cursive';">Available Products</h2>
 </div>
-<div class="products">
+
+<div class="row">
   <% @products.each do |product| %>
-    <div class="product">
-      <h2><%= product.name %></h2>
-      <p><%= product.description %></p>
-      <p>Price: $<%= product.price %></p>
-      <!-- Add more product details as desired -->
+    <div class="col-md-4 mb-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title"><%= product.name %></h5>
+          <p class="card-text"><%= product.description %></p>
+          <div class="d-flex justify-content-between align-items-center">
+            <span>Price: $<%= product.price %></span>
+            <%= link_to 'View Details', product_path(product.id) %>
+            <%= button_to 'Add to Cart', cart_add_path(product_id: product.id, quantity: 1), method: :post %>
+
+            <!-- You can also add 'Add to Cart' buttons or other elements here -->
+          </div>
+        </div>
+      </div>
     </div>
   <% end %>
 </div>
+
+<%= paginate @products %>
+
+

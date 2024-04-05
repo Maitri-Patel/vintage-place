@@ -1,5 +1,5 @@
 ActiveAdmin.register Product do
-    permit_params :name, :description, :price, :quantity_available, :category_id
+  permit_params :name, :description, :price, :quantity_available, :category_id, :on_sale
   
     index do
       selectable_column
@@ -22,6 +22,7 @@ ActiveAdmin.register Product do
         f.input :description
         f.input :price
         f.input :quantity_available
+        f.input :on_sale
         f.input :category, as: :select, collection: Category.all.map { |c| [c.name, c.id] }
       end
       f.actions

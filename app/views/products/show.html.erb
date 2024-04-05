@@ -1,0 +1,9 @@
+<!-- app/views/products/show.html.erb -->
+<div class="container">
+  <h1><%= @product.name %></h1>
+  <p><%= @product.description %></p>
+  <p>Price: <%= number_to_currency(@product.price) %></p>
+  <p>Available Quantity: <%= @product.quantity_available %></p>
+  <p>Category: <%= @product.category.name %></p>
+  <%= button_to 'Add to Cart', cart_add_path(product_id: @product.id, quantity: 1), method: :post, class: "btn btn-primary" %>
+</div>
