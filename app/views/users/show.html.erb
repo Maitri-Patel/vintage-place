@@ -1,0 +1,30 @@
+<!-- app/views/users/show.html.erb -->
+<%= form_with(model: @user, local: true) do |form| %>
+  <div class="field">
+    <%= form.label :address_line1 %>
+    <%= form.text_field :address_line1 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :address_line2 %>
+    <%= form.text_field :address_line2 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :city %>
+    <%= form.text_field :city %>
+  </div>
+
+  <!-- Assuming you have a Province model and a select box for choosing the province -->
+  <div class="field">
+    <%= form.label :province_id %>
+    <%= form.collection_select :province_id, Province.all, :id, :name, include_blank: true %>
+  </div>
+
+  <div class="field">
+    <%= form.label :postal_code %>
+    <%= form.text_field :postal_code %>
+  </div>
+
+  <%= form.submit "Update Profile" %>
+<% end %>

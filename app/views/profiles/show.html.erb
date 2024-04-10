@@ -1,0 +1,12 @@
+<!-- app/views/profiles/show.html.erb -->
+
+<h2>Profile Information</h2>
+
+<p><strong>Name:</strong> <%= @user.username %></p>
+<p><strong>Email:</strong> <%= @user.email %></p>
+<p><strong>Address:</strong> <%= @user.address_line1 %></p>
+<p><strong>City:</strong> <%= @user.city %></p>
+<p>Province: <%= @user.province.name %></p>
+<p><strong>Postal Code:</strong> <%= @user.postal_code %></p>
+
+<%= link_to 'Edit Profile', edit_profile_path, class: 'btn btn-primary' %>

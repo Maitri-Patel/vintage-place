@@ -1,6 +1,8 @@
 class Product < ApplicationRecord
   belongs_to :category
   validates :category, presence: true
+  has_many :order_tracks
+  has_many :orders, through: :order_tracks
 
   def self.ransackable_attributes(auth_object = nil)
     ["id", "name", "description", "price", "quantity_available", "category_id", "created_at", "updated_at"]
@@ -14,10 +16,10 @@ class Product < ApplicationRecord
   # Assuming you have a boolean column `on_sale` to indicate if the product is on sale
   scope :on_sale, -> { where(on_sale: true) }
 
-  # Assuming you consider "new" products as those created within the last 7 days
+  # Assuming you consider "new" products as those created within the last 3 days
   scope :new_products, -> { where('created_at >= ?', 7.days.ago) }
 
   # For recently updated products, assuming updated within the last 1 days
-  scope :recently_updated, -> { where('updated_at >= ?', 1.days.ago) }
+  #scope :recently_updated, -> { where('updated_at >= ?', 3.days.ago) }
   
 end

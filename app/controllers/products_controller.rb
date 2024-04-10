@@ -13,7 +13,7 @@ class ProductsController < ApplicationController
     # Apply Ransack search and additional filters on the filtered products
     @products = @products.on_sale if params[:on_sale].present?
     @products = @products.new_products if params[:new].present?
-    @products = @products.recently_updated if params[:recently_updated].present?
+    # @products = @products.recently_updated if params[:recently_updated].present?
 
     # Finally, apply Ransack search and paginate the results
     @products = @q.result(distinct: true).where(id: @products.select(:id)).page(params[:page]).per(9)
