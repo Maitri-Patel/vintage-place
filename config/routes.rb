@@ -27,6 +27,7 @@ Rails.application.routes.draw do
 
   #order route
   resources :orders, only: [:new, :create, :show]
+  resources :orders, only: [:index, :show]  # Ensures users can list and view individual orders
 
   
 

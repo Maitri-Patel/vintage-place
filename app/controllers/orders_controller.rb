@@ -1,6 +1,10 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!
 
+  def index
+    @orders = current_user.orders.includes(:order_tracks).order("created_at DESC")
+  end
+
   def new
     @order = current_user.orders.build
     @cart_items = get_cart_items
