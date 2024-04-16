@@ -2,6 +2,8 @@
 <div class="container mt-5">
   <h1 class="mb-4">Review Your Order</h1>
 
+  
+
   <% total_price = 0 %>
 
   <table class="table">
@@ -27,26 +29,25 @@
     </tbody>
   </table>
 
-  <!-- Address fields for the order -->
-  <% if current_user.address_line1 %>
-    <%= fields_for :address, current_user do |addr_form| %>
-      <%= addr_form.label :address_line1 %>
-      <%= addr_form.text_field :address_line1 %>
+  <div class="mb-4">
+    <h3>Shipping Address</h3>
+    <address>
+      <%= @order.user.address_line1 %><br>
+      <%= @order.user.city %>, <%= @order.user.province.name %><br>
+      <%= @order.user.postal_code %>
+    </address>
+  </div>
 
-      <%= addr_form.label :city %>
-      <%= addr_form.text_field :city %>
+  
 
-      <%= addr_form.label :province_id %>
-      <%= addr_form.collection_select :province_id, Province.all, :id, :name, include_blank: true %>
+<p>Subtotal: <%= number_to_currency(@subtotal) %></p>
+<p>GST: <%= number_to_currency(@tax_details[:gst]) %></p>
+<p>PST: <%= number_to_currency(@tax_details[:pst]) %></p>
+<p>HST: <%= number_to_currency(@tax_details[:hst]) %></p>
+<p>Total Estimated Tax: <%= number_to_currency(@tax_details[:total_tax]) %></p>
+<h3>Total: <%= number_to_currency(@total_with_taxes) %></h3>
 
-      <%= addr_form.label :postal_code %>
-      <%= addr_form.text_field :postal_code %>
-    <% end %>
-  <% end %>
-
-  <p>Subtotal: <%= number_to_currency(@subtotal) %></p>
-<p>Estimated Tax: <%= number_to_currency(@estimated_tax) %></p>
-<h3>Total: <%= number_to_currency(@subtotal + @estimated_tax) %></h3>
+<%= link_to 'Back to Cart', cart_path, class: 'btn btn-secondary' %>
 
 
   <div class="d-flex justify-content-between align-items-center mb-4">

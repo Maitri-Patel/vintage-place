@@ -2,5 +2,7 @@
 class OrderTrack < ApplicationRecord
   belongs_to :order
   belongs_to :product
-  # Add any additional fields you need here, such as quantity or item price
+ 
+  validates :quantity, presence: true, numericality: { greater_than: 0 }
+  validates :price_at_purchase, presence: true, numericality: { greater_than_or_equal_to: 0 }
 end

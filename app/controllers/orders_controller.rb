@@ -1,67 +1,62 @@
 class OrdersController < ApplicationController
-    before_action :authenticate_user!
-  
-    def new
-      @order = Order.new
-      @cart_items = get_cart_items
-      @subtotal = calculate_subtotal(@cart_items)
-      @estimated_tax = calculate_tax(@subtotal)
-    end
+  before_action :authenticate_user!
 
-    def show
-      @order = Order.find(params[:id]) # Make sure this line is correctly finding the order
-    end
-  
-    def create
-      @order = current_user.orders.build(order_params)
-      @cart_items = get_cart_items
-      build_order_tracks
-  
-      if @order.save
-         # session[:cart] = {} Clear the cart after successfully creating an order
-        redirect_to @order, notice: 'Your order was successfully placed.'
-      else
-        render :new
-      end
-    end
-    
-    private
-    
-    def order_params
-      params.require(:order).permit(:total_price, :tax_amount)
-    end
-    
-    def build_order_tracks
-      total_price = 0
-      @cart_items.each do |product, quantity|
-        subtotal = product.price * quantity
-        total_price += subtotal
-        @order.order_tracks.build(product: product, quantity: quantity, price_at_purchase: product.price)
-      end
-      @order.total_price = total_price
-      @order.tax_amount = calculate_tax(total_price) # Calculate the tax based on total price
-    end
-    
-    def get_cart_items
-      session[:cart].map do |product_id_str, quantity|
-        product = Product.find_by(id: product_id_str.to_i)
-        [product, quantity] if product
-      end.compact
-    end
+  def new
+    @order = current_user.orders.build
+    @cart_items = get_cart_items
+    @subtotal = calculate_subtotal(@cart_items)
+    @tax_details = @order.calculate_taxes(@subtotal)
+    @total_with_taxes = @subtotal + @tax_details[:total_tax]
+  end
 
-    def calculate_subtotal(cart_items)
-      cart_items.sum { |product, quantity| product.price * quantity }
-    end
-  
-    def calculate_tax(subtotal)
-      tax_rate = current_user.province.tax_rate / 100.0
-      subtotal * tax_rate
-    end
-   
-    
-    # Use this method to whitelist address-related parameters.
-    def address_params
-      params.require(:user).permit(:address_line1, :city, :province_id, :postal_code)
+  def show
+    @order = Order.find(params[:id])
+    @tax_details = @order.calculate_taxes(@order.calculate_subtotal)
+    @subtotal = @order.calculate_subtotal
+    @total_with_taxes = @subtotal + @tax_details[:total_tax]
+  end
+
+  def create
+    @order = current_user.orders.build(order_params)
+    @cart_items = get_cart_items
+    build_order_tracks
+
+    if @order.save
+      flash[:notice] = 'Order placed successfully!'
+      redirect_to order_path(@order)
+    else
+      flash.now[:alert] = 'Failed to place the order.'
+      render :new
     end
   end
+
+  private
+
+  def order_params
+    params.require(:order).permit(:total_price, :tax_amount)
+  end
+
+  def build_order_tracks
+    @cart_items.each do |product, quantity|
+      @order.order_tracks.build(product: product, quantity: quantity, price_at_purchase: product.price)
+    end
   
+    # Assuming calculate_subtotal is a controller method that calculates the subtotal
+    @order.total_price = calculate_subtotal(@cart_items)
+    
+    # Assuming calculate_taxes is an Order model method that calculates the tax based on subtotal and province
+    tax_details = @order.calculate_taxes(@order.total_price)
+    @order.tax_amount = tax_details[:total_tax]
+  end
+  
+  def get_cart_items
+    session[:cart].map do |product_id, quantity|
+      product = Product.find(product_id)
+      [product, quantity] if product
+    end.compact
+  end
+
+  def calculate_subtotal(cart_items)
+    cart_items.sum { |product, quantity| product.price * quantity }
+  end
+end

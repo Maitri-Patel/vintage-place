@@ -15,7 +15,8 @@ Rails.application.routes.draw do
   resources :products, only: [:index, :show] # Combines index and show routes for products
 
   # Cart routes
-  get 'cart', to: 'cart#show'
+  get 'cart', to: 'cart#show', as: 'cart'
+
   post 'cart/items/:product_id', to: 'cart#add_item', as: 'cart_add'
   patch 'cart/items/:product_id', to: 'cart#update_item', as: 'update_cart_item'
   delete 'cart/items/:product_id', to: 'cart#remove_item', as: 'remove_cart_item'

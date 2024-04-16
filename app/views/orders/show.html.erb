@@ -1,20 +1,40 @@
 <!-- app/views/orders/show.html.erb -->
-<h1>Order Confirmation</h1>
+<div class="container mt-5 mb-5">
+  <h1 class="mb-4">Order Confirmation</h1>
 
-<p><strong>Order ID:</strong> <%= @order.id %></p>
-<p><strong>Date:</strong> <%= @order.created_at.strftime("%B %e, %Y") %></p>
+  <div class="mb-3">
+    <p><strong>Order ID:</strong> <%= @order.id %></p>
+    <p><strong>Date:</strong> <%= @order.created_at.strftime("%B %e, %Y") %></p>
+  </div>
 
-<h3>Products Ordered</h3>
-<ul>
-  <% @order.order_tracks.each do |order_track| %>
-    <li>
-      <%= order_track.product.name %> - Quantity: <%= order_track.quantity %>, Price: $<%= order_track.price_at_purchase %>
-    </li>
-  <% end %>
-</ul>
+  <div class="mb-4">
+    <h3>Products Ordered</h3>
+    <ul>
+      <% @order.order_tracks.each do |order_track| %>
+        <li>
+          <%= order_track.product.name %> - Quantity: <%= order_track.quantity %>, Price: <%= number_to_currency(order_track.price_at_purchase) %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
 
-<p>Subtotal: <%= number_to_currency(@order.total_price) %></p>
-<p>Tax Amount: <%= number_to_currency(@order.tax_amount) %></p>
-<p>Total: <%= number_to_currency(@order.total_price + @order.tax_amount) %></p>
+  <div class="mb-4">
+    <h3>Shipping Address</h3>
+    <address>
+      <%= @order.user.address_line1 %><br>
+      <%= @order.user.city %>, <%= @order.user.province.name %><br>
+      <%= @order.user.postal_code %>
+    </address>
+  </div>
+ 
 
-<p><strong>Total Price:</strong> $<%= @order.total_price %></p>
+  <div class="mb-3">
+    <p>Subtotal: <%= number_to_currency(@subtotal) %></p>
+<p>GST: <%= number_to_currency(@tax_details[:gst]) %></p>
+<p>PST: <%= number_to_currency(@tax_details[:pst]) %></p>
+<p>HST: <%= number_to_currency(@tax_details[:hst]) %></p>
+<p>Total Estimated Tax: <%= number_to_currency(@tax_details[:total_tax]) %></p>
+<h3>Total: <%= number_to_currency(@total_with_taxes) %></h3>
+
+  </div>
+</div>
