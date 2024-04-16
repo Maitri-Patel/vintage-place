@@ -20,4 +20,12 @@ class Order < ApplicationRecord
   def calculate_subtotal
     order_tracks.sum { |item| item.product.price * item.quantity }
   end
+
+  def self.ransackable_associations(auth_object = nil)
+    %w[user order_tracks products]
+  end
+
+  def self.ransackable_attributes(auth_object = nil)
+    %w[created_at id total_price tax_amount updated_at user_id]
+  end
 end
