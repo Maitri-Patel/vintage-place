@@ -1,41 +1,18 @@
 <!-- app/views/products/index.html.erb -->
-<!-- Container to center content and apply flexbox -->
-
 <div class="container text-center">
-
   <!-- Navigation Links -->
   <nav class="nav justify-content-center">
-
     <%= link_to 'On Sale', products_path(on_sale: true), class: 'nav-link' %>
     <%= link_to 'New Products', products_path(new: true), class: 'nav-link' %>
     <%# <%= link_to 'Recently Updated', products_path(recently_updated: true), class: 'nav-link' %> 
   </nav>
-      <% Category.all.each do |category| %>
-  <%= link_to category.name, products_path(category_id: category.id) %>
-<% end %><br>
 
   <!-- Heading with custom style -->
   <h2 class="mt-4" style="font-family: 'Cursive';">Available Products</h2>
 </div>
 
 <div class="row">
-  <% @products.each do |product| %>
-    <div class="col-md-4 mb-4">
-      <div class="card h-100">
-        <div class="card-body">
-          <h5 class="card-title"><%= product.name %></h5>
-          <p class="card-text"><%= product.description %></p>
-          <div class="d-flex justify-content-between align-items-center">
-            <span>Price: $<%= product.price %></span>
-            <%= link_to 'View Details', product_path(product.id) %>
-            <%= button_to 'Add to Cart', cart_add_path(product_id: product.id, quantity: 1), method: :post %>
-          </div>
-        </div>
-      </div>
-    </div>
-  <% end %>
+  <%= render partial: 'products/product', collection: @products, as: :product %>
 </div>
 
 <%= paginate @products %>
-
-
