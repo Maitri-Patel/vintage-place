@@ -24,4 +24,9 @@ class ProductsController < ApplicationController
     # This line is not necessary for show action unless you have a search form on the show page as well
     @q = Product.ransack(params[:q]) 
   end
+
+  def product_params
+    params.require(:product).permit(:name, :description, :price, :image)
+  end
+  
 end

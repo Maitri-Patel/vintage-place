@@ -3,6 +3,7 @@ class Product < ApplicationRecord
   validates :category, presence: true
   has_many :order_tracks
   has_many :orders, through: :order_tracks
+  has_one_attached :image
 
   validates :name, presence: true
   validates :price, presence: true, numericality: { greater_than_or_equal_to: 0 }
