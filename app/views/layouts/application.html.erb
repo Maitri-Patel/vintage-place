@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <title>VintagePlace</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
@@ -16,59 +17,67 @@
 </head>
 
 <body>
-<nav class="navbar navbar-expand navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container">
     <%= link_to root_path, class: 'navbar-brand' do %>
-      <%= image_tag('logo.png', alt: 'Vintage Place logo', width: 50, height: 50) %>
+      <%= image_tag('logo.png', alt: 'Vintage Place logo', style: 'height: 50px;') %>
     <% end %>
-    <%= link_to 'About', about_path %> 
-    <%= link_to 'Contact', contact_path %>
-    <% if @q %>
-    <%= search_form_for @q, url: products_path, method: :get do |f| %>
-      <div >
-        <%= f.label :category_id_eq, "Category" %>
-        <%= f.select :category_id_eq, Category.all.collect {|c| [c.name, c.id]}, include_blank: 'All Categories', class: 'form-control mr-2' %>
-        
-        <%= f.label :name_or_description_cont, "Search" %>
-        <%= f.search_field :name_or_description_cont, class: %>
-        
-        <%= f.submit "Search", class: 'btn btn-primary' %>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-      </div>
+    <div class="collapse navbar-collapse" id="navbarContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <%= link_to 'About', about_path, class: 'nav-link' %>
+        <%= link_to 'Contact', contact_path, class: 'nav-link' %>
+      </ul>
+      <% if @q %>
+        <%= search_form_for @q, url: products_path, method: :get, class: 'd-flex' do |f| %>
+          <%= f.label :category_id_eq, "Category", class: 'me-2' %>
+          <%= f.select :category_id_eq, Category.all.collect { |c| [c.name, c.id] }, include_blank: 'All Categories', class: 'form-select me-2' %>
+          
+          <%= f.label :name_or_description_cont, "Search", class: 'me-2' %>
+          <%= f.search_field :name_or_description_cont, class: 'form-control me-2' %>
+          
+          <%= f.submit "Search", class: 'btn btn-outline-primary' %>
+        <% end %>
       <% end %>
-    <% end %>
 
-  
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <%= link_to 'Cart', cart_path, class: "nav-link" %>
-      </li>
-      <% if user_signed_in? %>
-  <li class="nav-item">
-    <%= link_to 'Logout', destroy_user_session_path, data: { turbo_method: :delete }, class: 'nav-link' %>
-  </li>
-<% else %>
-  <li class="nav-item">
-    <%= link_to 'Login', new_user_session_path, class: 'nav-link' %>
-  </li>
-  <li class="nav-item">
-    <%= link_to 'Sign Up', new_user_registration_path, class: 'nav-link' %>
-  </li>
-<% end %>
-
-<% if user_signed_in? %>
-  <%= link_to 'Profile', profile_path %>
-<% end %>
-      
-    </ul>
+      <ul class="navbar-nav ms-auto">
+        <% if user_signed_in? %>
+          <li class="nav-item">
+            <%= link_to 'Profile', profile_path, class: 'nav-link' %>
+          </li>
+          <li class="nav-item">
+            <%= link_to 'Logout', destroy_user_session_path, data: { turbo_method: :delete }, class: 'nav-link' %>
+          </li>
+        <% else %>
+          <li class="nav-item">
+            <%= link_to 'Login', new_user_session_path, class: 'nav-link' %>
+          </li>
+          <li class="nav-item">
+            <%= link_to 'Sign Up', new_user_registration_path, class: 'nav-link' %>
+          </li>
+        <% end %>
+        <li class="nav-item">
+          <%= link_to 'Cart', cart_path, class: "nav-link" %>
+        </li>
+      </ul>
+    </div>
   </div>
 </nav>
 
- <% flash.each do |key, message| %>
-    <div class="<%= key %>"><%= message %></div>
+<div class="container mt-3">
+  <% flash.each do |key, message| %>
+    <div class="alert alert-<%= key %> alert-dismissible fade show" role="alert">
+      <%= message %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
   <% end %>
 
-<%= yield %>
+  <%= yield %>
+</div>
+
 <!-- Include Bootstrap JS -->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
 </body>

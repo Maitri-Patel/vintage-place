@@ -1,10 +1,35 @@
 <!-- app/views/static_pages/contact.html.erb -->
 <div class="container mt-5 mb-5">
   <% if @content %>
-    <div class="card">
+
+    <div class="card border-0 shadow-sm">
       <div class="card-body">
-        <h1 class="card-title mb-4"><%= @content.title %></h1>
+        <h1 class="card-title text-center mb-4"><%= @content.title %></h1>
         <div class="card-text"><%= simple_format(@content.content) %></div>
+      </div>
+    </div>
+    
+    <!-- Contact Form (Assuming you have a form for contacting customer service) -->
+    <div class="card mt-4 border-0 shadow-sm">
+      <div class="card-header">
+        Contact Customer Service
+      </div>
+      <div class="card-body">
+        <%= form_with url: contact_path, method: :post, local: true do |form| %>
+          <div class="mb-3">
+            <%= form.label :name, "Your Name" %>
+            <%= form.text_field :name, class: 'form-control', required: true %>
+          </div>
+          <div class="mb-3">
+            <%= form.label :email, "Your Email" %>
+            <%= form.email_field :email, class: 'form-control', required: true %>
+          </div>
+          <div class="mb-3">
+            <%= form.label :message, "Your Message" %>
+            <%= form.text_area :message, class: 'form-control', rows: 5, required: true %>
+          </div>
+          <%= form.submit "Send Message", class: 'btn btn-primary' %>
+        <% end %>
       </div>
     </div>
   <% else %>
