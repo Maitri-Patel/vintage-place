@@ -1,5 +1,5 @@
 ActiveAdmin.register Product do
-  permit_params :name, :description, :price, :quantity_available, :category_id, :on_sale
+  permit_params :name, :description, :price, :quantity_available, :category_id, :on_sale, :image
   
     index do
       selectable_column
@@ -9,6 +9,19 @@ ActiveAdmin.register Product do
       column :price
       column :quantity_available
       column "Category", :category, sortable: :category_id
+
+      # Add a column for image if it's attached
+      column "Image" do |product|
+      if product.image.attached?
+         image_tag product.image.variant(resize_to_limit: [100, 100])
+      else
+         'No Image'
+        end
+      end
+
+
+
+
       actions
     end
   
@@ -24,6 +37,11 @@ ActiveAdmin.register Product do
         f.input :quantity_available
         f.input :on_sale
         f.input :category, as: :select, collection: Category.all.map { |c| [c.name, c.id] }
+
+        # Add image upload field
+        f.input :image, as: :file, hint: f.object.image.attached? ?
+        image_tag(f.object.image, size: "200x200") : content_tag(:span, "No image available")
+
       end
       f.actions
     end
