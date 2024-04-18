@@ -1,12 +1,23 @@
 <!-- app/views/products/show.html.erb -->
-<div class="container">
-  <p>
-  <%= image_tag @product.image if @product.image.attached? %>
-</p>
-  <h1><%= @product.name %></h1>
-  <p><%= @product.description %></p>
-  <p>Price: <%= number_to_currency(@product.price) %></p>
-  <p>Available Quantity: <%= @product.quantity_available %></p>
-  <p>Category: <%= @product.category.name %></p>
-  <%= button_to 'Add to Cart', cart_add_path(product_id: @product.id, quantity: 1), method: :post, class: "btn btn-primary" %>
+<div class="container mt-5 mb-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <!-- Product Image -->
+      <%= image_tag @product.image, class: 'img-fluid mb-3' if @product.image.attached? %>
+
+      <!-- Product Details Card -->
+      <div class="card border-0 shadow">
+        <div class="card-body text-center">
+          <h1 class="card-title"><%= @product.name %></h1>
+          <p class="card-text"><%= @product.description %></p>
+          <p class="card-text"><strong>Price:</strong> <%= number_to_currency(@product.price) %></p>
+          <p class="card-text"><strong>Available Quantity:</strong> <%= @product.quantity_available %></p>
+          <p class="card-text"><strong>Category:</strong> <%= @product.category.name %></p>
+        </div>
+        <div class="card-footer bg-white text-center">
+          <%= button_to 'Add to Cart', cart_add_path(product_id: @product.id, quantity: 1), method: :post, class: "btn btn-primary" %>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
