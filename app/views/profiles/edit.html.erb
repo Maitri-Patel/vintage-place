@@ -1,46 +1,42 @@
 <!-- app/views/profiles/edit.html.erb -->
+<div class="container mt-4 mb-4">
+  <h2 class="mb-3">Edit Profile</h2>
 
-<h2>Edit Profile</h2>
+  <%= form_with(model: @user, url: profile_path, local: true, method: :put) do |form| %>
+    <div class="mb-3">
+      <%= form.label :username, class: 'form-label' %>
+      <%= form.text_field :username, class: 'form-control' %>
+    </div>
 
-<%= form_with(model: @user, url: profile_path, local: true, method: :put) do |form| %>
-  <div class="field">
-    <%= form.label :username %><br>
-    <%= form.text_field :username %>
-  </div>
+    <div class="mb-3">
+      <%= form.label :email, class: 'form-label' %>
+      <%= form.email_field :email, class: 'form-control' %>
+    </div>
 
-  <div class="field">
-    <%= form.label :email %><br>
-    <%= form.email_field :email %>
-  </div>
+    <div class="mb-3">
+      <%= form.label :address_line1, class: 'form-label' %>
+      <%= form.text_field :address_line1, class: 'form-control' %>
+    </div>
 
-  <div class="field">
-    <%= form.label :address_line1 %><br>
-    <%= form.text_field :address_line1 %>
-  </div>
+    <div class="mb-3">
+      <%= form.label :city, class: 'form-label' %>
+      <%= form.text_field :city, class: 'form-control' %>
+    </div>
 
-  <div class="field">
-    <%= form.label :city %><br>
-    <%= form.text_field :city %>
-  </div>
+    <div class="mb-3">
+      <%= form.label :province_id, class: 'form-label' %>
+      <%= form.collection_select :province_id, Province.all, :id, :name, { include_blank: true }, { class: 'form-select' } %>
+    </div>
 
-  <div class="field">
-    <%= form.label :province_id %><br>
-    <%= form.collection_select :province_id, Province.all, :id, :name, include_blank: true %>
-  </div>
+    <div class="mb-3">
+      <%= form.label :postal_code, class: 'form-label' %>
+      <%= form.text_field :postal_code, class: 'form-control' %>
+    </div>
 
-  <div class="field">
-    <%= form.label :postal_code %><br>
-    <%= form.text_field :postal_code %>
-  </div>
+    <div class="actions">
+      <%= form.submit "Update Profile", class: 'btn btn-primary' %>
+    </div>
+  <% end %>
 
-  <div class="actions">
-    <%= form_with(model: @user, url: profile_path, local: true) do |form| %>
-  <div class="actions">
-    <%= form.submit "Update Profile" %>
-  </div>
-<% end %>
-  </div>
-<% end %>
-
-<%= link_to 'Back to Profile', profile_path, class: 'btn btn-secondary' %>
-
+  <%= link_to 'Back to Profile', profile_path, class: 'btn btn-secondary mt-2' %>
+</div>
