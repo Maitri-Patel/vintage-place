@@ -1,23 +1,31 @@
 <!-- app/views/orders/index.html.erb -->
-<h1>Your Past Orders</h1>
+<div class="container mt-5">
+  <h1 class="mb-4">Your Past Orders</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Order ID</th>
-      <th>Date</th>
-      <th>Total</th>
-      <th>Details</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @orders.each do |order| %>
-      <tr>
-        <td><%= order.id %></td>
-        <td><%= order.created_at.strftime("%d %B %Y") %></td>
-        <td>$<%= order.total_price %></td>
-        <td><%= link_to 'View', order_path(order) %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+  <div class="table-responsive">
+    <table class="table table-hover">
+      <thead class="table-light">
+        <tr>
+          <th scope="col">Order ID</th>
+          <th scope="col">Date</th>
+          <th scope="col">Total</th>
+          <th scope="col">Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @orders.each do |order| %>
+          <tr>
+            <td scope="row"><%= order.id %></td>
+            <td><%= order.created_at.strftime("%d %B %Y") %></td>
+            <td>$<%= order.total_price %></td>
+            <td><%= link_to 'View', order_path(order), class: 'btn btn-primary btn-sm' %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <% if @orders.empty? %>
+    <p class="text-center">You have no past orders.</p>
+  <% end %>
+</div>
