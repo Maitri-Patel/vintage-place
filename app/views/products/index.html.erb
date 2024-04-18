@@ -1,18 +1,22 @@
 <!-- app/views/products/index.html.erb -->
-<div class="container text-center">
+<div class="container mt-4 mb-4">
+  
+
   <!-- Navigation Links -->
-  <nav class="nav justify-content-center">
-    <%= link_to 'On Sale', products_path(on_sale: true), class: 'nav-link' %>
-    <%= link_to 'New Products', products_path(new: true), class: 'nav-link' %>
-    <%# <%= link_to 'Recently Updated', products_path(recently_updated: true), class: 'nav-link' %> 
-  </nav>
+  <div class="d-flex justify-content-center mb-4">
+    <%= link_to 'On Sale', products_path(on_sale: true), class: 'btn btn-info mx-2' %>
+    <%= link_to 'New Products', products_path(new: true), class: 'btn btn-info mx-2' %>
+  </div>
 
-  <!-- Heading with custom style -->
-  <h2 class="mt-4" style="font-family: 'Cursive';">Available Products</h2>
+  <!-- Heading -->
+  <h2 class="text-center" style="font-family: 'Open Sans', sans-serif; font-weight: bold;">Available Products</h2>
+  
+  <div class="row mt-4">
+    <%= render partial: 'products/product', collection: @products, as: :product %>
+  </div>
+
+  <!-- Pagination -->
+  <div class="d-flex justify-content-center mt-4">
+    <%= paginate @products %>
+  </div>
 </div>
-
-<div class="row">
-  <%= render partial: 'products/product', collection: @products, as: :product %>
-</div>
-
-<%= paginate @products %>
