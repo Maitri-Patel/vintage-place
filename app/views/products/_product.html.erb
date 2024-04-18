@@ -1,13 +1,16 @@
 <!-- app/views/products/_product.html.erb -->
 <div class="col-md-4 mb-4">
-  <div class="card h-100">
+  <div class="card h-100 shadow-sm">
+    
     <div class="card-body">
       <h5 class="card-title"><%= product.name %></h5>
-      <p class="card-text"><%= product.description %></p>
+      <p class="card-text"><%= truncate(product.description, length: 100) %></p>
+    </div>
+    <div class="card-footer bg-white">
       <div class="d-flex justify-content-between align-items-center">
-        <span>Price: $<%= product.price %></span>
-        <%= link_to 'View Details', product_path(product) %>
-        <%= button_to 'Add to Cart', cart_add_path(product_id: product.id, quantity: 1), method: :post %>
+        <span class="text-muted">Price: $<%= product.price %></span>
+        <%= link_to 'View Details', product_path(product), class: 'btn btn-outline-primary btn-sm' %>
+        <%= button_to 'Add to Cart', cart_add_path(product_id: product.id, quantity: 1), method: :post, class: 'btn btn-primary btn-sm' %>
       </div>
     </div>
   </div>
